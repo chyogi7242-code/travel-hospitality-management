@@ -12,6 +12,8 @@ C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reserva
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\Role.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\RoomType.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\User.java
+C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\exception\GlobalExceptionHandler.java
+C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\exception\ReservationNotFoundException.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\filter\JwtAuthenticationFilter.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\repository\HotelRepository.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\repository\ReservationRepository.java

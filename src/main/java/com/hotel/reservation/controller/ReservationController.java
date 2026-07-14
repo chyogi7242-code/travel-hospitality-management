@@ -16,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservationController {
 
+
     private final ReservationService reservationService;
 
 
@@ -77,4 +78,5 @@ public class ReservationController {
                 "Reservation status updated successfully"
         );
     }
+
 }

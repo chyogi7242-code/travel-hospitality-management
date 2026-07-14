@@ -4,6 +4,7 @@ import com.hotel.reservation.dto.ReservationRequest;
 import com.hotel.reservation.dto.ReservationResponse;
 import com.hotel.reservation.entity.Reservation;
 import com.hotel.reservation.entity.ReservationStatus;
+import com.hotel.reservation.exception.ReservationNotFoundException;
 import com.hotel.reservation.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<ReservationResponse> getAllReservations() {
 
-        // Get all reservations logic will be implemented in next step
+        // Get all reservation logic will be implemented in next step
 
         return null;
     }
@@ -50,7 +51,11 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Reservation not found"));
+                        new ReservationNotFoundException(
+                                "Reservation not found with id : " + id
+                        )
+                );
+
 
         reservation.setStatus(ReservationStatus.CANCELLED);
 
@@ -63,7 +68,10 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Reservation not found"));
+                        new ReservationNotFoundException(
+                                "Reservation not found with id : " + id
+                        )
+                );
 
 
         try {
@@ -71,11 +79,13 @@ public class ReservationServiceImpl implements ReservationService {
             ReservationStatus reservationStatus =
                     ReservationStatus.valueOf(status.toUpperCase());
 
+
             reservation.setStatus(reservationStatus);
+
 
         } catch (IllegalArgumentException e) {
 
-            throw new RuntimeException(
+            throw new IllegalArgumentException(
                     "Invalid reservation status: " + status
             );
         }
