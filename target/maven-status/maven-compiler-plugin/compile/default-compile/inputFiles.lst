@@ -3,6 +3,8 @@ C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reserva
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\dto\AuthResponse.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\dto\LoginRequest.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\dto\RegisterRequest.java
+C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\dto\ReservationRequest.java
+C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\dto\ReservationResponse.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\Hotel.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\Reservation.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\ReservationStatus.java
