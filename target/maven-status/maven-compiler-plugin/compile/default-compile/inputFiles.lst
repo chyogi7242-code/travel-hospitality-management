@@ -3,9 +3,14 @@ C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reserva
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\dto\AuthResponse.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\dto\LoginRequest.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\dto\RegisterRequest.java
+C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\Hotel.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\Role.java
+C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\Room.java
+C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\RoomType.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\entity\User.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\filter\JwtAuthenticationFilter.java
+C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\repository\HotelRepository.java
+C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\repository\RoomRepository.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\repository\UserRepository.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\security\SecurityConfig.java
 C:\Users\HP\OneDrive\Documents\Hotel-Reservation\src\main\java\com\hotel\reservation\service\impl\UserServiceImpl.java
