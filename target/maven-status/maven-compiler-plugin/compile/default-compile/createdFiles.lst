@@ -1,10 +1,10 @@
 com\hotel\reservation\entity\User.class
-com\hotel\reservation\service\impl\ReservationServiceImpl.class
 com\hotel\reservation\entity\Role.class
 com\hotel\reservation\entity\Reservation$ReservationBuilder.class
 com\hotel\reservation\repository\ReservationRepository.class
 com\hotel\reservation\controller\ReservationController.class
 com\hotel\reservation\dto\ReservationResponse$ReservationResponseBuilder.class
+com\hotel\reservation\service\ReservationServiceImpl.class
 com\hotel\reservation\dto\ReservationRequest.class
 com\hotel\reservation\repository\UserRepository.class
 com\hotel\reservation\dto\ReservationResponse.class

@@ -7,11 +7,19 @@ import java.util.List;
 
 public interface ReservationService {
 
+
     ReservationResponse createReservation(ReservationRequest request);
+
 
     ReservationResponse getReservationById(Long id);
 
+
     List<ReservationResponse> getAllReservations();
 
+
     void cancelReservation(Long id);
+
+
+    void updateReservationStatus(Long id, String status);
+
 }
