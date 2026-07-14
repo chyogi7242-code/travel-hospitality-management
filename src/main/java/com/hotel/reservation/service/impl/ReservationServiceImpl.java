@@ -17,26 +17,29 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
 
-    @Override
-    public ReservationResponse createReservation(ReservationRequest request) {
+   @Override
+public ReservationResponse createReservation(ReservationRequest request) {
 
-        Reservation reservation = Reservation.builder()
-                .checkInDate(request.getCheckInDate())
-                .checkOutDate(request.getCheckOutDate())
-                .numberOfGuests(request.getNumberOfGuests())
-                .status(ReservationStatus.PENDING)
-                .build();
+    Reservation reservation = Reservation.builder()
+            .checkInDate(request.getCheckInDate())
+            .checkOutDate(request.getCheckOutDate())
+            .numberOfGuests(request.getNumberOfGuests())
+            .status(ReservationStatus.PENDING)
+            .build();
 
-        Reservation savedReservation = reservationRepository.save(reservation);
+    Reservation savedReservation = reservationRepository.save(reservation);
 
-        return ReservationResponse.builder()
-                .reservationId(savedReservation.getId())
-                .checkInDate(savedReservation.getCheckInDate())
-                .checkOutDate(savedReservation.getCheckOutDate())
-                .numberOfGuests(savedReservation.getNumberOfGuests())
-                .status(savedReservation.getStatus())
-                .build();
-    }
+    return ReservationResponse.builder()
+            .reservationId(savedReservation.getId())
+            .userId(request.getUserId())
+            .roomId(request.getRoomId())
+            .checkInDate(savedReservation.getCheckInDate())
+            .checkOutDate(savedReservation.getCheckOutDate())
+            .numberOfGuests(savedReservation.getNumberOfGuests())
+            .status(savedReservation.getStatus())
+            .build();
+}
+
 
     @Override
     public ReservationResponse getReservationById(Long id) {
