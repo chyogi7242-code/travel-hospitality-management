@@ -1,9 +1,15 @@
 package com.travel.travelhospitality.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +25,10 @@ public class Hotel {
     private String address;
     private String description;
     private double rating;
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Room> rooms;
 
     public Hotel() {
     }
@@ -69,5 +79,13 @@ public class Hotel {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
 }
