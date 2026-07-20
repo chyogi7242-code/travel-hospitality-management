@@ -8,11 +8,13 @@ import com.hotel.reservation.service.UserService;
 
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class UserServiceImpl implements UserService {
 
 
     private final UserRepository userRepository;
+
 
 
     public UserServiceImpl(UserRepository userRepository){
@@ -23,37 +25,64 @@ public class UserServiceImpl implements UserService {
 
 
 
+
+
     @Override
     public AuthResponse register(RegisterRequest request){
 
 
         if(userRepository.findByEmail(request.getEmail()).isPresent()){
 
+
             return new AuthResponse(
                     "Email already exists",
+                    null,
                     null
             );
 
         }
 
 
+
+
+
         User user = User.builder()
+
                 .name(request.getName())
+
                 .email(request.getEmail())
+
                 .password(request.getPassword())
+
                 .role(Role.CUSTOMER)
+
                 .build();
 
 
-        userRepository.save(user);
+
+
+
+        User savedUser = userRepository.save(user);
+
+
+
 
 
         return new AuthResponse(
+
                 "Registration successful",
-                "dummy-token"
+
+                "dummy-token",
+
+                savedUser.getId()
+
         );
 
+
     }
+
+
+
 
 
 
@@ -61,30 +90,58 @@ public class UserServiceImpl implements UserService {
     public AuthResponse login(LoginRequest request){
 
 
+
         User user = userRepository
+
                 .findByEmail(request.getEmail())
+
                 .orElse(null);
 
 
 
+
+
+
+
         if(user == null ||
+
                 !user.getPassword().equals(request.getPassword())){
 
 
+
+
+
             return new AuthResponse(
+
                     "Invalid credentials",
+
+                    null,
+
                     null
+
             );
+
 
         }
 
 
 
+
+
+
+
         return new AuthResponse(
+
                 "Login successful",
-                "dummy-token"
+
+                "dummy-token",
+
+                user.getId()
+
         );
 
+
     }
+
 
 }

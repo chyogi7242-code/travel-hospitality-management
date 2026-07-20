@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getReservations, cancelReservation } from "../services/api";
+import { getUserReservations, cancelReservation } from "../services/api";
 
 
 function CustomerPortal() {
@@ -23,6 +23,11 @@ function CustomerPortal() {
 
 
 
+    // Temporary user id
+    // JWT user extraction will replace this later
+    const userId = 1;
+
+
 
 
     useEffect(() => {
@@ -35,47 +40,52 @@ function CustomerPortal() {
 
 
 
-
     const loadReservations = () => {
 
 
-        getReservations(page, size, sortBy)
+        getUserReservations(
+            userId,
+            page,
+            size,
+            sortBy
+        )
 
-            .then((response) => {
-
-
-                console.log(
-                    "RESERVATIONS:",
-                    response.data
-                );
-
-
-                setReservations(
-                    response.data.content || []
-                );
+        .then((response) => {
 
 
-                setTotalPages(
-                    response.data.totalPages || 0
-                );
+            console.log(
+                "USER RESERVATIONS:",
+                response.data
+            );
 
 
-            })
+            setReservations(
+                response.data.content || []
+            );
 
 
-            .catch((error) => {
+            setTotalPages(
+                response.data.totalPages || 0
+            );
 
 
-                console.log(
-                    "ERROR:",
-                    error
-                );
+        })
 
 
-            });
+        .catch((error) => {
+
+
+            console.log(
+                "ERROR:",
+                error
+            );
+
+
+        });
 
 
     };
+
 
 
 
@@ -91,7 +101,7 @@ function CustomerPortal() {
 
 
 
-        if (!confirmCancel) {
+        if(!confirmCancel){
 
             return;
 
@@ -103,35 +113,35 @@ function CustomerPortal() {
 
         cancelReservation(id)
 
-            .then(() => {
+        .then(() => {
 
 
-                alert(
-                    "Reservation cancelled"
-                );
+            alert(
+                "Reservation cancelled"
+            );
 
 
-                loadReservations();
+            loadReservations();
 
 
-            })
+        })
 
 
-            .catch((error) => {
+        .catch((error) => {
 
 
-                console.log(
-                    "Cancel Error:",
-                    error
-                );
+            console.log(
+                "Cancel Error:",
+                error
+            );
 
 
-                alert(
-                    "Failed to cancel reservation"
-                );
+            alert(
+                "Failed to cancel reservation"
+            );
 
 
-            });
+        });
 
 
     };
@@ -150,7 +160,6 @@ function CustomerPortal() {
             <h1>
                 Welcome to Customer Portal
             </h1>
-
 
 
 
@@ -174,94 +183,81 @@ function CustomerPortal() {
 
 
 
-
-            <div>
-
-
-                <label>
-                    Sort By:
-                </label>
+            <label>
+                Sort By:
+            </label>
 
 
+            <select
 
-                <select
+                value={sortBy}
 
-                    value={sortBy}
+                onChange={(e)=>{
 
-                    onChange={(e) => {
+                    setSortBy(e.target.value);
 
-                        setSortBy(e.target.value);
+                    setPage(0);
 
-                        setPage(0);
+                }}
 
-                    }}
+            >
 
-                >
-
-
-                    <option value="id">
-                        ID
-                    </option>
+                <option value="id">
+                    ID
+                </option>
 
 
-                    <option value="checkInDate">
-                        Check In Date
-                    </option>
+                <option value="checkInDate">
+                    Check In Date
+                </option>
 
 
-                    <option value="status">
-                        Status
-                    </option>
+                <option value="status">
+                    Status
+                </option>
 
 
-                </select>
+            </select>
 
 
 
 
 
-
-                <label>
-                    Page Size:
-                </label>
-
+            <label>
+                Page Size:
+            </label>
 
 
+            <select
 
-                <select
+                value={size}
 
-                    value={size}
+                onChange={(e)=>{
 
-                    onChange={(e) => {
+                    setSize(Number(e.target.value));
 
-                        setSize(Number(e.target.value));
+                    setPage(0);
 
-                        setPage(0);
+                }}
 
-                    }}
+            >
 
-                >
-
-
-                    <option value="5">
-                        5
-                    </option>
+                <option value="5">
+                    5
+                </option>
 
 
-                    <option value="10">
-                        10
-                    </option>
+                <option value="10">
+                    10
+                </option>
 
 
-                    <option value="20">
-                        20
-                    </option>
+                <option value="20">
+                    20
+                </option>
 
 
-                </select>
-
-
-            </div>
+            </select>
 
 
 
@@ -307,12 +303,11 @@ function CustomerPortal() {
 
 
 
-
                 <tbody>
 
 
-                    {reservations.length === 0 ? (
-
+                {
+                    reservations.length === 0 ? (
 
                         <tr>
 
@@ -326,8 +321,7 @@ function CustomerPortal() {
                     ) : (
 
 
-
-                        reservations.map((reservation) => (
+                        reservations.map((reservation)=>(
 
 
                             <tr key={reservation.reservationId}>
@@ -338,11 +332,9 @@ function CustomerPortal() {
                                 </td>
 
 
-
                                 <td>
                                     {reservation.checkInDate}
                                 </td>
-
 
 
                                 <td>
@@ -350,11 +342,9 @@ function CustomerPortal() {
                                 </td>
 
 
-
                                 <td>
                                     {reservation.numberOfGuests ?? "N/A"}
                                 </td>
-
 
 
                                 <td>
@@ -363,34 +353,27 @@ function CustomerPortal() {
 
 
 
-
-
                                 <td>
 
 
-                                    {
-                                        reservation.status !== "CANCELLED" && (
+                                {
+                                    reservation.status !== "CANCELLED" && (
 
-                                            <button
+                                        <button
+                                            onClick={() =>
+                                                handleCancel(
+                                                    reservation.reservationId
+                                                )
+                                            }
+                                        >
+                                            Cancel
+                                        </button>
 
-                                                onClick={() =>
-                                                    handleCancel(
-                                                        reservation.reservationId
-                                                    )
-                                                }
-
-                                            >
-
-                                                Cancel
-
-                                            </button>
-
-                                        )
-                                    }
+                                    )
+                                }
 
 
                                 </td>
-
 
 
                             </tr>
@@ -398,9 +381,9 @@ function CustomerPortal() {
 
                         ))
 
+                    )
 
-                    )}
-
+                }
 
 
                 </tbody>
@@ -413,8 +396,8 @@ function CustomerPortal() {
 
 
 
-            <br />
 
+            <br />
 
 
 
@@ -432,7 +415,6 @@ function CustomerPortal() {
                 Previous
 
             </button>
-
 
 
 

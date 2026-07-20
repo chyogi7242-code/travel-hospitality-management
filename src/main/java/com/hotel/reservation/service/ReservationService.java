@@ -6,18 +6,46 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
+
 public interface ReservationService {
 
-    ReservationResponse createReservation(ReservationRequest request);
 
-    ReservationResponse getReservationById(Long id);
+    ReservationResponse createReservation(
+            ReservationRequest request
+    );
+
+
+    ReservationResponse getReservationById(
+            Long id
+    );
+
 
     List<ReservationResponse> getAllReservations();
 
-    Page<ReservationResponse> getReservations(int page, int size, String sortBy);
 
-    void cancelReservation(Long id);
+    Page<ReservationResponse> getReservations(
+            int page,
+            int size,
+            String sortBy
+    );
 
-    void updateReservationStatus(Long id, String status);
+
+    Page<ReservationResponse> getUserReservations(
+            Long userId,
+            int page,
+            int size,
+            String sortBy
+    );
+
+
+    void cancelReservation(
+            Long id
+    );
+
+
+    void updateReservationStatus(
+            Long id,
+            String status
+    );
 
 }

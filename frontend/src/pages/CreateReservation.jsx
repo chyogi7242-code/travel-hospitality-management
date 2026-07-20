@@ -9,65 +9,124 @@ function CreateReservation() {
     const navigate = useNavigate();
 
 
+    const userId = localStorage.getItem("userId");
+
+
+
     const [reservation, setReservation] = useState({
-        userId: 1,
+
+        userId: userId,
+
         checkInDate: "",
+
         checkOutDate: "",
+
         numberOfGuests: 1
+
     });
+
+
+
 
 
 
     const handleChange = (e) => {
 
+
         setReservation({
+
             ...reservation,
+
             [e.target.name]: e.target.value
+
         });
 
+
     };
+
+
+
+
+
 
 
 
     const createReservation = async (e) => {
 
+
         e.preventDefault();
+
+
 
 
         try {
 
+
             const response = await api.post(
+
                 "/reservations",
+
                 reservation
+
             );
+
+
 
 
             alert(
+
                 "Reservation created successfully"
+
             );
 
 
-            console.log(response.data);
+
+            console.log(
+
+                "CREATED:",
+                response.data
+
+            );
+
+
 
 
             navigate("/customer");
 
 
+
+
         } catch(error) {
 
+
+
             console.log(
+
                 "Reservation Error:",
+
                 error
+
             );
+
 
 
             alert(
+
                 "Failed to create reservation"
+
             );
+
+
 
         }
 
+
     };
+
+
+
+
+
 
 
 
@@ -75,67 +134,119 @@ function CreateReservation() {
 
         <div>
 
+
             <h2>
                 Book Hotel Reservation
             </h2>
 
 
+
+
+
             <form onSubmit={createReservation}>
+
+
 
 
                 <label>
                     Check In:
                 </label>
 
+
                 <input
+
                     type="date"
+
                     name="checkInDate"
+
                     onChange={handleChange}
+
                     required
+
                 />
 
 
-                <br/>
+
+
+                <br />
+
+
+
 
 
                 <label>
                     Check Out:
                 </label>
 
+
+
                 <input
+
                     type="date"
+
                     name="checkOutDate"
+
                     onChange={handleChange}
+
                     required
+
                 />
 
 
-                <br/>
+
+
+
+                <br />
+
+
+
 
 
                 <label>
                     Guests:
                 </label>
 
+
+
+
                 <input
+
                     type="number"
+
                     name="numberOfGuests"
+
                     min="1"
+
                     value={reservation.numberOfGuests}
+
                     onChange={handleChange}
+
                     required
+
                 />
 
 
-                <br/>
+
+
+
+                <br />
+
+
+
 
 
                 <button>
+
                     Book Reservation
+
                 </button>
 
 
+
+
+
             </form>
+
 
 
         </div>
@@ -143,6 +254,7 @@ function CreateReservation() {
     );
 
 }
+
 
 
 export default CreateReservation;

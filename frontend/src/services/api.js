@@ -11,31 +11,23 @@ const api = axios.create({
 
 
 
-export const getReservations = (
+export const getUserReservations = (
+
+    userId,
 
     page = 0,
+
     size = 5,
+
     sortBy = "id"
 
 ) => {
 
 
     return api.get(
-        `/reservations?page=${page}&size=${size}&sortBy=${sortBy}`
-    );
 
+        `/reservations/user/${userId}?page=${page}&size=${size}&sortBy=${sortBy}`
 
-};
-
-
-
-
-
-export const cancelReservation = (id) => {
-
-
-    return api.delete(
-        `/reservations/${id}`
     );
 
 
