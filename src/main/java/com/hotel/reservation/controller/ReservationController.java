@@ -5,11 +5,10 @@ import com.hotel.reservation.dto.ReservationResponse;
 import com.hotel.reservation.service.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -43,12 +42,23 @@ public class ReservationController {
     }
 
 
-    // Get All Reservations
+    // Get Reservations with Pagination & Sorting
     @GetMapping
-    public ResponseEntity<List<ReservationResponse>> getAllReservations() {
+    public ResponseEntity<Page<ReservationResponse>> getReservations(
+
+            @RequestParam(defaultValue = "0") int page,
+
+            @RequestParam(defaultValue = "5") int size,
+
+            @RequestParam(defaultValue = "id") String sortBy) {
 
         return ResponseEntity.ok(
-                reservationService.getAllReservations()
+
+                reservationService.getReservations(
+                        page,
+                        size,
+                        sortBy
+                )
         );
     }
 

@@ -18,16 +18,25 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+
+    @Column(name = "check_in_date")
     private LocalDate checkInDate;
 
+
+    @Column(name = "check_out_date")
     private LocalDate checkOutDate;
 
+
+    @Column(name = "number_of_guests")
     private Integer numberOfGuests;
 
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ReservationStatus status;
 }

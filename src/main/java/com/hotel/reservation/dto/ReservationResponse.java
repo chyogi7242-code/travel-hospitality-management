@@ -16,8 +16,6 @@ public class ReservationResponse {
 
     private Long userId;
 
-    private Long roomId;
-
     private LocalDate checkInDate;
 
     private LocalDate checkOutDate;

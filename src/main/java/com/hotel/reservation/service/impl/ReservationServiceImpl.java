@@ -1,12 +1,18 @@
-package com.hotel.reservation.service;
+package com.hotel.reservation.service.impl;
 
 import com.hotel.reservation.dto.ReservationRequest;
 import com.hotel.reservation.dto.ReservationResponse;
 import com.hotel.reservation.entity.Reservation;
 import com.hotel.reservation.entity.ReservationStatus;
+import com.hotel.reservation.entity.User;
 import com.hotel.reservation.exception.ReservationNotFoundException;
 import com.hotel.reservation.repository.ReservationRepository;
+import com.hotel.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,36 +21,62 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
 
-
     private final ReservationRepository reservationRepository;
-
 
     @Override
     public ReservationResponse createReservation(ReservationRequest request) {
 
-        // Reservation creation logic will be implemented in next step
+        Reservation reservation = new Reservation();
 
-        return null;
+        User user = new User();
+        user.setId(request.getUserId());
+
+        reservation.setUser(user);
+        reservation.setCheckInDate(request.getCheckInDate());
+        reservation.setCheckOutDate(request.getCheckOutDate());
+        reservation.setNumberOfGuests(request.getNumberOfGuests());
+        reservation.setStatus(ReservationStatus.CONFIRMED);
+
+        Reservation saved = reservationRepository.save(reservation);
+
+        return mapToResponse(saved);
     }
-
 
     @Override
     public ReservationResponse getReservationById(Long id) {
 
-        // Get reservation logic will be implemented in next step
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(() ->
+                        new ReservationNotFoundException(
+                                "Reservation not found with id : " + id
+                        )
+                );
 
-        return null;
+        return mapToResponse(reservation);
     }
-
 
     @Override
     public List<ReservationResponse> getAllReservations() {
 
-        // Get all reservation logic will be implemented in next step
-
-        return null;
+        return reservationRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
+    @Override
+    public Page<ReservationResponse> getReservations(int page, int size, String sortBy) {
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(sortBy).ascending()
+        );
+
+        return reservationRepository
+                .findAll(pageable)
+                .map(this::mapToResponse);
+    }
 
     @Override
     public void cancelReservation(Long id) {
@@ -56,12 +88,10 @@ public class ReservationServiceImpl implements ReservationService {
                         )
                 );
 
-
         reservation.setStatus(ReservationStatus.CANCELLED);
 
         reservationRepository.save(reservation);
     }
-
 
     @Override
     public void updateReservationStatus(Long id, String status) {
@@ -73,25 +103,37 @@ public class ReservationServiceImpl implements ReservationService {
                         )
                 );
 
-
         try {
 
-            ReservationStatus reservationStatus =
-                    ReservationStatus.valueOf(status.toUpperCase());
-
-
-            reservation.setStatus(reservationStatus);
-
+            reservation.setStatus(
+                    ReservationStatus.valueOf(status.toUpperCase())
+            );
 
         } catch (IllegalArgumentException e) {
 
-            throw new IllegalArgumentException(
+            throw new RuntimeException(
                     "Invalid reservation status: " + status
             );
         }
 
-
         reservationRepository.save(reservation);
     }
 
+    private ReservationResponse mapToResponse(Reservation reservation) {
+
+        ReservationResponse response = new ReservationResponse();
+
+        response.setReservationId(reservation.getId());
+
+        if (reservation.getUser() != null) {
+            response.setUserId(reservation.getUser().getId());
+        }
+
+        response.setCheckInDate(reservation.getCheckInDate());
+        response.setCheckOutDate(reservation.getCheckOutDate());
+        response.setNumberOfGuests(reservation.getNumberOfGuests());
+        response.setStatus(reservation.getStatus());
+
+        return response;
+    }
 }
