@@ -3,16 +3,17 @@ import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 
-function Register(){
+function Register() {
 
     const navigate = useNavigate();
+
 
     const [user, setUser] = useState({
         name: "",
         email: "",
-        password: "",
-        phone: ""
+        password: ""
     });
+
 
 
     const handleChange = (e) => {
@@ -25,21 +26,30 @@ function Register(){
     };
 
 
+
     const registerUser = async (e) => {
 
         e.preventDefault();
 
+
         try {
 
-            await api.post("/auth/register", user);
+            const response = await api.post(
+                "/auth/register",
+                user
+            );
 
-            alert("Registration Successful");
+
+            alert(response.data.message);
+
 
             navigate("/login");
 
+
         } catch(error) {
 
-            console.log(error);
+            console.log("REGISTER ERROR:", error);
+
             alert("Registration Failed");
 
         }
@@ -47,11 +57,14 @@ function Register(){
     };
 
 
+
     return (
 
         <div>
 
-            <h2>Customer Registration</h2>
+            <h2>
+                Customer Registration
+            </h2>
 
 
             <form onSubmit={registerUser}>
@@ -60,42 +73,61 @@ function Register(){
                 <input
                     name="name"
                     placeholder="Name"
+                    value={user.name}
                     onChange={handleChange}
+                    required
                 />
+
+
+                <br/>
 
 
                 <input
                     name="email"
+                    type="email"
                     placeholder="Email"
+                    value={user.email}
                     onChange={handleChange}
+                    required
                 />
+
+
+                <br/>
 
 
                 <input
                     name="password"
                     type="password"
                     placeholder="Password"
+                    value={user.password}
                     onChange={handleChange}
+                    required
                 />
 
 
-                <input
-                    name="phone"
-                    placeholder="Phone"
-                    onChange={handleChange}
-                />
+                <br/>
 
 
-                <button>
+                <button type="submit">
                     Register
                 </button>
 
 
             </form>
-<p>
-    Already have an account?
-    <a href="/login"> Login</a>
-</p>
+
+
+
+            <p>
+                Already have an account?
+
+                <button
+                    onClick={() => navigate("/login")}
+                >
+                    Login
+                </button>
+
+            </p>
+
 
         </div>
 

@@ -3,7 +3,7 @@ import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 
-function Login(){
+function Login() {
 
     const navigate = useNavigate();
 
@@ -30,7 +30,10 @@ function Login(){
 
         try {
 
-            const response = await api.post("/auth/login", login);
+            const response = await api.post(
+                "/auth/login",
+                login
+            );
 
 
             localStorage.setItem(
@@ -39,7 +42,7 @@ function Login(){
             );
 
 
-            alert("Login Successful");
+            alert(response.data.message);
 
 
             navigate("/customer");
@@ -47,8 +50,9 @@ function Login(){
 
         } catch(error) {
 
-            console.log(error);
-            alert("Login Failed");
+            console.log("LOGIN ERROR:", error);
+
+            alert("Invalid email or password");
 
         }
 
@@ -59,7 +63,9 @@ function Login(){
 
         <div>
 
-            <h2>Customer Login</h2>
+            <h2>
+                Customer Login
+            </h2>
 
 
             <form onSubmit={loginUser}>
@@ -67,30 +73,48 @@ function Login(){
 
                 <input
                     name="email"
+                    type="email"
                     placeholder="Email"
+                    value={login.email}
                     onChange={handleChange}
+                    required
                 />
+
+
+                <br/>
 
 
                 <input
                     name="password"
                     type="password"
                     placeholder="Password"
+                    value={login.password}
                     onChange={handleChange}
+                    required
                 />
 
 
-                <button>
+                <br/>
+
+
+                <button type="submit">
                     Login
                 </button>
 
 
             </form>
 
-<p>
-    Don't have an account?
-    <a href="/register"> Register</a>
-</p>
+
+            <p>
+                Don't have an account?
+                <button
+                    onClick={() => navigate("/register")}
+                >
+                    Register
+                </button>
+            </p>
+
+
         </div>
 
     );

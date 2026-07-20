@@ -1,48 +1,70 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CustomerPortal from "./pages/CustomerPortal";
 
 
+function ProtectedRoute({ children }) {
+
+    const token = localStorage.getItem("token");
+
+
+    if (!token) {
+
+        return <Navigate to="/login" />;
+
+    }
+
+
+    return children;
+
+}
+
+
+
 function App() {
 
-  return (
+    return (
 
-    <BrowserRouter>
+        <BrowserRouter>
 
-      <Routes>
-
-
-        <Route
-          path="/"
-          element={<Login />}
-        />
+            <Routes>
 
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+                <Route
+                    path="/"
+                    element={<Login />}
+                />
 
 
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
 
 
-        <Route
-          path="/customer"
-          element={<CustomerPortal />}
-        />
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
 
 
-      </Routes>
+                <Route
+                    path="/customer"
+                    element={
+                        <ProtectedRoute>
+                            <CustomerPortal />
+                        </ProtectedRoute>
+                    }
+                />
 
-    </BrowserRouter>
 
-  );
+            </Routes>
+
+        </BrowserRouter>
+
+    );
 
 }
 
