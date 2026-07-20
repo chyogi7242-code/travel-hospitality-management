@@ -3,17 +3,17 @@ import MyReservations from "./components/MyReservations";
 
 function App() {
 
-  return (
-    <div>
+    return (
+        <div>
 
-      <BookingForm />
+            <BookingForm />
 
-      <hr />
+            <hr />
 
-      <MyReservations />
+            <MyReservations />
 
-    </div>
-  );
+        </div>
+    );
 
 }
 

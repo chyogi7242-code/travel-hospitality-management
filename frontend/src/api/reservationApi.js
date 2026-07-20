@@ -25,3 +25,15 @@ export const getUserReservations = async (userId) => {
 
     return response.data;
 };
+
+
+
+// Cancel Reservation
+export const cancelReservation = async (reservationId) => {
+
+    const response = await axios.delete(
+        `${API_URL}/${reservationId}`
+    );
+
+    return response.data;
+};

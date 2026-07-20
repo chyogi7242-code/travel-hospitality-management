@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getUserReservations } from "../api/reservationApi";
+import { getUserReservations, cancelReservation } from "../api/reservationApi";
+
 
 function MyReservations() {
 
     const [reservations, setReservations] = useState([]);
-    const [loading, setLoading] = useState(true);
 
     const userId = 1;
 
@@ -23,15 +23,11 @@ function MyReservations() {
 
             const response = await getUserReservations(userId);
 
-            setReservations(response.content);
+            setReservations(response.content || []);
 
         } catch (error) {
 
             console.log(error);
-
-        } finally {
-
-            setLoading(false);
 
         }
 
@@ -39,11 +35,25 @@ function MyReservations() {
 
 
 
-    if (loading) {
+    const handleCancel = async (reservationId) => {
 
-        return <h3>Loading reservations...</h3>;
+        try {
 
-    }
+            await cancelReservation(reservationId);
+
+            alert("Reservation cancelled successfully");
+
+            fetchReservations();
+
+        } catch(error) {
+
+            console.log(error);
+
+            alert("Cancel failed");
+
+        }
+
+    };
 
 
 
@@ -51,57 +61,52 @@ function MyReservations() {
 
         <div>
 
-            <h2>My Reservations</h2>
+            <h1>My Reservations</h1>
 
 
             {
-                reservations.length === 0 ?
+                reservations.map((reservation) => (
 
-                (
-                    <p>No reservations found</p>
-                )
+                    <div key={reservation.reservationId}>
 
-                :
+                        <h3>
+                            Reservation ID: {reservation.reservationId}
+                        </h3>
 
-                (
+                        <p>
+                            Check In: {reservation.checkInDate}
+                        </p>
 
-                    reservations.map((reservation) => (
+                        <p>
+                            Check Out: {reservation.checkOutDate}
+                        </p>
 
-                        <div key={reservation.reservationId}>
+                        <p>
+                            Guests: {reservation.numberOfGuests}
+                        </p>
 
-                            <h3>
-                                Reservation ID: {reservation.reservationId}
-                            </h3>
-
-
-                            <p>
-                                Check In: {reservation.checkInDate}
-                            </p>
-
-
-                            <p>
-                                Check Out: {reservation.checkOutDate}
-                            </p>
+                        <p>
+                            Status: {reservation.status}
+                        </p>
 
 
-                            <p>
-                                Number of Guests: {reservation.numberOfGuests}
-                            </p>
+                        {
+                            reservation.status !== "CANCELLED" &&
+                            <button
+                                onClick={() =>
+                                    handleCancel(reservation.reservationId)
+                                }
+                            >
+                                Cancel Reservation
+                            </button>
+                        }
 
 
-                            <p>
-                                Status: {reservation.status}
-                            </p>
+                        <hr />
 
+                    </div>
 
-                            <hr />
-
-                        </div>
-
-                    ))
-
-                )
-
+                ))
             }
 
 
@@ -110,5 +115,6 @@ function MyReservations() {
     );
 
 }
+
 
 export default MyReservations;
