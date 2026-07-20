@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CustomerPortal from "./pages/CustomerPortal";
+import CreateReservation from "./pages/CreateReservation";
 
 
 function ProtectedRoute({ children }) {
@@ -55,6 +56,16 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <CustomerPortal />
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                <Route
+                    path="/reservation/create"
+                    element={
+                        <ProtectedRoute>
+                            <CreateReservation />
                         </ProtectedRoute>
                     }
                 />
