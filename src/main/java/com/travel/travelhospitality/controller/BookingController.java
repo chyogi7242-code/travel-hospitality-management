@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.travel.travelhospitality.entity.Booking;
 import com.travel.travelhospitality.service.BookingService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/bookings")
 public class BookingController {
@@ -22,32 +24,27 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    // Add Booking
     @PostMapping
-    public Booking addBooking(@RequestBody Booking booking) {
+    public Booking addBooking(@Valid @RequestBody Booking booking) {
         return bookingService.saveBooking(booking);
     }
 
-    // Get All Bookings
     @GetMapping
     public List<Booking> getAllBookings() {
         return bookingService.getAllBookings();
     }
 
-    // Get Booking By Id
     @GetMapping("/{id}")
     public Booking getBookingById(@PathVariable Long id) {
         return bookingService.getBookingById(id);
     }
 
-    // Update Booking
     @PutMapping("/{id}")
     public Booking updateBooking(@PathVariable Long id,
-                                 @RequestBody Booking booking) {
+                                 @Valid @RequestBody Booking booking) {
         return bookingService.updateBooking(id, booking);
     }
 
-    // Delete Booking
     @DeleteMapping("/{id}")
     public String deleteBooking(@PathVariable Long id) {
         bookingService.deleteBooking(id);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.travel.travelhospitality.entity.Hotel;
+import com.travel.travelhospitality.exception.ResourceNotFoundException;
 import com.travel.travelhospitality.repository.HotelRepository;
 
 @Service
@@ -14,7 +15,7 @@ public class HotelService {
     @Autowired
     private HotelRepository hotelRepository;
 
-    // Save Hotel
+    // Add Hotel
     public Hotel saveHotel(Hotel hotel) {
         return hotelRepository.save(hotel);
     }
@@ -26,28 +27,39 @@ public class HotelService {
 
     // Get Hotel By Id
     public Hotel getHotelById(Long id) {
-        return hotelRepository.findById(id).orElse(null);
-    }
-
-    // Delete Hotel
-    public void deleteHotel(Long id) {
-        hotelRepository.deleteById(id);
+        return hotelRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Hotel not found with id: " + id));
     }
 
     // Update Hotel
     public Hotel updateHotel(Long id, Hotel hotel) {
-        Hotel existingHotel = hotelRepository.findById(id).orElse(null);
 
-        if (existingHotel != null) {
-            existingHotel.setHotelName(hotel.getHotelName());
-            existingHotel.setCity(hotel.getCity());
-            existingHotel.setAddress(hotel.getAddress());
-            existingHotel.setDescription(hotel.getDescription());
-            existingHotel.setRating(hotel.getRating());
+        Hotel existingHotel = hotelRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Hotel not found with id: " + id));
 
-            return hotelRepository.save(existingHotel);
-        }
+        existingHotel.setHotelName(hotel.getHotelName());
+        existingHotel.setCity(hotel.getCity());
+        existingHotel.setAddress(hotel.getAddress());
+        existingHotel.setDescription(hotel.getDescription());
+        existingHotel.setRating(hotel.getRating());
 
-        return null;
+        return hotelRepository.save(existingHotel);
+    }
+
+    // Delete Hotel
+    public void deleteHotel(Long id) {
+
+        Hotel hotel = hotelRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Hotel not found with id: " + id));
+
+        hotelRepository.delete(hotel);
+    }
+
+    // Search Hotels By City
+    public List<Hotel> getHotelsByCity(String city) {
+        return hotelRepository.findByCity(city);
     }
 }

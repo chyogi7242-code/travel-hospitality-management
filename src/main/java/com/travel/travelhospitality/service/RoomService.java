@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.travel.travelhospitality.entity.Room;
+import com.travel.travelhospitality.exception.ResourceNotFoundException;
 import com.travel.travelhospitality.repository.RoomRepository;
 
 @Service
@@ -26,29 +27,35 @@ public class RoomService {
 
     // Get Room By Id
     public Room getRoomById(Long id) {
-        return roomRepository.findById(id).orElse(null);
+        return roomRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Room not found with id: " + id));
     }
 
     // Update Room
     public Room updateRoom(Long id, Room room) {
-        Room existingRoom = roomRepository.findById(id).orElse(null);
 
-        if (existingRoom != null) {
-            existingRoom.setRoomNumber(room.getRoomNumber());
-            existingRoom.setRoomType(room.getRoomType());
-            existingRoom.setPrice(room.getPrice());
-            existingRoom.setCapacity(room.getCapacity());
-            existingRoom.setAvailable(room.isAvailable());
-            existingRoom.setHotel(room.getHotel());
+        Room existingRoom = roomRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Room not found with id: " + id));
 
-            return roomRepository.save(existingRoom);
-        }
+        existingRoom.setRoomNumber(room.getRoomNumber());
+        existingRoom.setRoomType(room.getRoomType());
+        existingRoom.setPrice(room.getPrice());
+        existingRoom.setCapacity(room.getCapacity());
+        existingRoom.setAvailable(room.isAvailable());
+        existingRoom.setHotel(room.getHotel());
 
-        return null;
+        return roomRepository.save(existingRoom);
     }
 
     // Delete Room
     public void deleteRoom(Long id) {
-        roomRepository.deleteById(id);
+
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Room not found with id: " + id));
+
+        roomRepository.delete(room);
     }
 }

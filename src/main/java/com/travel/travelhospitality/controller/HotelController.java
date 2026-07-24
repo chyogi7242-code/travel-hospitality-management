@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.travel.travelhospitality.entity.Hotel;
 import com.travel.travelhospitality.service.HotelService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/hotels")
 public class HotelController {
@@ -24,7 +26,7 @@ public class HotelController {
 
     // Add Hotel
     @PostMapping
-    public Hotel addHotel(@RequestBody Hotel hotel) {
+    public Hotel addHotel(@Valid @RequestBody Hotel hotel) {
         return hotelService.saveHotel(hotel);
     }
 
@@ -42,7 +44,8 @@ public class HotelController {
 
     // Update Hotel
     @PutMapping("/{id}")
-    public Hotel updateHotel(@PathVariable Long id, @RequestBody Hotel hotel) {
+    public Hotel updateHotel(@PathVariable Long id,
+                             @Valid @RequestBody Hotel hotel) {
         return hotelService.updateHotel(id, hotel);
     }
 
@@ -51,5 +54,11 @@ public class HotelController {
     public String deleteHotel(@PathVariable Long id) {
         hotelService.deleteHotel(id);
         return "Hotel deleted successfully!";
+    }
+
+    // Search Hotels By City
+    @GetMapping("/city/{city}")
+    public List<Hotel> getHotelsByCity(@PathVariable String city) {
+        return hotelService.getHotelsByCity(city);
     }
 }

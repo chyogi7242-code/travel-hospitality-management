@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.travel.travelhospitality.entity.Booking;
+import com.travel.travelhospitality.exception.ResourceNotFoundException;
 import com.travel.travelhospitality.repository.BookingRepository;
 
 @Service
@@ -26,30 +27,34 @@ public class BookingService {
 
     // Get Booking By Id
     public Booking getBookingById(Long id) {
-        return bookingRepository.findById(id).orElse(null);
+        return bookingRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Booking not found with id: " + id));
     }
 
     // Update Booking
     public Booking updateBooking(Long id, Booking booking) {
 
-        Booking existingBooking = bookingRepository.findById(id).orElse(null);
+        Booking existingBooking = bookingRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Booking not found with id: " + id));
 
-        if (existingBooking != null) {
+        existingBooking.setCustomerName(booking.getCustomerName());
+        existingBooking.setCheckInDate(booking.getCheckInDate());
+        existingBooking.setCheckOutDate(booking.getCheckOutDate());
+        existingBooking.setNumberOfGuests(booking.getNumberOfGuests());
+        existingBooking.setRoom(booking.getRoom());
 
-            existingBooking.setCustomerName(booking.getCustomerName());
-            existingBooking.setCheckInDate(booking.getCheckInDate());
-            existingBooking.setCheckOutDate(booking.getCheckOutDate());
-            existingBooking.setNumberOfGuests(booking.getNumberOfGuests());
-            existingBooking.setRoom(booking.getRoom());
-
-            return bookingRepository.save(existingBooking);
-        }
-
-        return null;
+        return bookingRepository.save(existingBooking);
     }
 
     // Delete Booking
     public void deleteBooking(Long id) {
-        bookingRepository.deleteById(id);
+
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Booking not found with id: " + id));
+
+        bookingRepository.delete(booking);
     }
 }

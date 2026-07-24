@@ -11,6 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "hotels")
@@ -20,10 +23,20 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Hotel name is required")
     private String hotelName;
+
+    @NotBlank(message = "City is required")
     private String city;
+
+    @NotBlank(message = "Address is required")
     private String address;
+
+    @NotBlank(message = "Description is required")
     private String description;
+
+    @Min(value = 1, message = "Rating must be at least 1")
+    @Max(value = 5, message = "Rating cannot be greater than 5")
     private double rating;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)

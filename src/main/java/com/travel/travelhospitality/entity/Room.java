@@ -14,6 +14,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,10 +32,18 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Room number is required")
     private String roomNumber;
+
+    @NotBlank(message = "Room type is required")
     private String roomType;
+
+    @Positive(message = "Price must be greater than 0")
     private double price;
+
+    @Min(value = 1, message = "Capacity must be at least 1")
     private int capacity;
+
     private boolean available;
 
     @ManyToOne
