@@ -58,4 +58,14 @@ public class RoomService {
 
         roomRepository.delete(room);
     }
+
+    // Search Rooms By Availability
+    public List<Room> getRoomsByAvailability(boolean available) {
+        return roomRepository.findByAvailable(available);
+    }
+
+    // Search Rooms By Price Range
+    public List<Room> getRoomsByPriceRange(double min, double max) {
+        return roomRepository.findByPriceBetween(min, max);
+    }
 }
