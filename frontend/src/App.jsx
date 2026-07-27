@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Navbar from "./components/Navbar";
 import BookingForm from "./components/BookingForm";
 import MyReservations from "./components/MyReservations";
 import ReservationDetails from "./components/ReservationDetails";
@@ -9,8 +10,15 @@ import NotFound from "./components/NotFound";
 function App() {
   return (
     <BrowserRouter>
+
+      <Navbar />
+
       <Routes>
-        <Route path="/" element={<BookingForm />} />
+
+        <Route
+          path="/"
+          element={<BookingForm />}
+        />
 
         <Route
           path="/reservations"
@@ -31,7 +39,9 @@ function App() {
           path="*"
           element={<NotFound />}
         />
+
       </Routes>
+
     </BrowserRouter>
   );
 }
