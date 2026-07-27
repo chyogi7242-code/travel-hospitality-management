@@ -12,6 +12,7 @@ com\hotel\reservation\entity\User.class
 com\hotel\reservation\service\impl\ReservationServiceImpl.class
 com\hotel\reservation\dto\RegisterRequest.class
 com\hotel\reservation\entity\Reservation$ReservationBuilder.class
+com\hotel\reservation\exception\UserNotFoundException.class
 com\hotel\reservation\exception\GlobalExceptionHandler.class
 com\hotel\reservation\exception\ReservationNotFoundException.class
 com\hotel\reservation\repository\ReservationRepository.class

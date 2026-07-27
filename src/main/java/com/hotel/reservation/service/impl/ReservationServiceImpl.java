@@ -6,6 +6,7 @@ import com.hotel.reservation.entity.Reservation;
 import com.hotel.reservation.entity.ReservationStatus;
 import com.hotel.reservation.entity.User;
 import com.hotel.reservation.exception.ReservationNotFoundException;
+import com.hotel.reservation.exception.UserNotFoundException;
 import com.hotel.reservation.repository.ReservationRepository;
 import com.hotel.reservation.repository.UserRepository;
 import com.hotel.reservation.service.ReservationService;
@@ -40,7 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
         User user = userRepository.findById(request.getUserId())
 
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new UserNotFoundException(
                                 "User not found with id: "
                                         + request.getUserId()
                         )
@@ -119,7 +120,6 @@ public class ReservationServiceImpl implements ReservationService {
 
 
 
-
     @Override
     public Page<ReservationResponse> getReservations(
             int page,
@@ -146,7 +146,6 @@ public class ReservationServiceImpl implements ReservationService {
                 .map(this::mapToResponse);
 
     }
-
 
 
 
@@ -180,7 +179,6 @@ public class ReservationServiceImpl implements ReservationService {
                 .map(this::mapToResponse);
 
     }
-
 
 
 
@@ -249,7 +247,7 @@ public class ReservationServiceImpl implements ReservationService {
         } catch (IllegalArgumentException e) {
 
 
-            throw new RuntimeException(
+            throw new IllegalArgumentException(
                     "Invalid reservation status: " + status
             );
 
