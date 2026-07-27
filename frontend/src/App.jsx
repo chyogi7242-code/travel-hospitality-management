@@ -2,9 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import BookingForm from "./components/BookingForm";
 import MyReservations from "./components/MyReservations";
-
-// These pages/components will be created in the next steps
 import ReservationDetails from "./components/ReservationDetails";
+import AdminReservations from "./components/AdminReservations";
 import NotFound from "./components/NotFound";
 
 function App() {
@@ -12,12 +11,26 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<BookingForm />} />
-        <Route path="/reservations" element={<MyReservations />} />
+
+        <Route
+          path="/reservations"
+          element={<MyReservations />}
+        />
+
         <Route
           path="/reservations/:id"
           element={<ReservationDetails />}
         />
-        <Route path="*" element={<NotFound />} />
+
+        <Route
+          path="/admin"
+          element={<AdminReservations />}
+        />
+
+        <Route
+          path="*"
+          element={<NotFound />}
+        />
       </Routes>
     </BrowserRouter>
   );
