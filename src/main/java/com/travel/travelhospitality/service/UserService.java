@@ -1,7 +1,5 @@
 package com.travel.travelhospitality.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +12,24 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    // Save User
-    public User saveUser(User user) {
+    // Register User
+    public User register(User user) {
         return userRepository.save(user);
     }
 
-    // Get All Users
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    // Find User by Username
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 
-    // Get User By Id
+    // Get User by ID
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    // Get All Users
+    public java.util.List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     // Delete User

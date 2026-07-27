@@ -3,6 +3,9 @@ package com.travel.travelhospitality.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.travel.travelhospitality.entity.Hotel;
@@ -61,5 +64,15 @@ public class HotelService {
     // Search Hotels By City
     public List<Hotel> getHotelsByCity(String city) {
         return hotelRepository.findByCity(city);
+    }
+
+    // Pagination
+    public Page<Hotel> getHotelsByPage(int page, int size) {
+        return hotelRepository.findAll(PageRequest.of(page, size));
+    }
+
+    // Sorting
+    public List<Hotel> getHotelsSortedBy(String field) {
+        return hotelRepository.findAll(Sort.by(Sort.Direction.ASC, field));
     }
 }

@@ -57,4 +57,9 @@ public class BookingService {
 
         bookingRepository.delete(booking);
     }
+
+    // Search Bookings By Customer Name
+    public List<Booking> getBookingsByCustomerName(String customerName) {
+        return bookingRepository.findByCustomerName(customerName);
+    }
 }

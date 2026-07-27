@@ -10,6 +10,7 @@ import com.travel.travelhospitality.entity.Hotel;
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
+    // Search Hotels By City
     List<Hotel> findByCity(String city);
 
 }
