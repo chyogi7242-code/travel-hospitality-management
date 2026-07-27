@@ -1,17 +1,58 @@
-# travel-hospitality-management
-Travel and Hospitality Management system_infotact solutions
-## Reservation API Testing
+# Travel & Hospitality - Hotel Reservation Engine
 
+## Overview
 
-- Tested create reservation API using Postman
-- Tested get reservation by ID API
-- Tested get all reservations API
-- Verified reservation data persistence with PostgreSQL
-- Verified backend connectivity and API responses
+A full-stack hotel reservation system developed using Spring Boot and React.
 
-## Day 
-- Tested reservation APIs using Postman
-- Verified create reservation endpoint
-- Verified get reservation endpoints
-- Verified cancel reservation endpoint
-- Verified status update endpoint
+The application allows customers to book rooms, view reservations, cancel bookings, and provides an admin interface to manage reservation status.
+
+---
+
+## Tech Stack
+
+### Backend
+- Java 21
+- Spring Boot 3
+- Spring Data JPA
+- Spring Security
+- PostgreSQL
+- Maven
+
+### Frontend
+- React
+- Vite
+- React Router
+- Axios
+
+---
+
+## Features
+
+### Customer Module
+
+- Create reservations
+- View reservations
+- View reservation details
+- Cancel reservations
+
+### Admin Module
+
+- View all reservations
+- Pagination
+- Update reservation status
+- Cancel reservations
+- Search reservations
+- Filter reservations by status
+
+### Authentication
+
+- User registration
+- User login
+
+---
+
+## Backend API Endpoints
+
+### Reservation APIs
+
+Create Reservation
