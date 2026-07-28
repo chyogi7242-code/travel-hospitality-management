@@ -1,6 +1,9 @@
 package com.travel.travelhospitality.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.travel.travelhospitality.entity.User;
@@ -12,23 +15,34 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // Register User
     public User register(User user) {
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return userRepository.save(user);
     }
 
-    // Find User by Username
+    // Find User
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
 
-    // Get User by ID
+    // Save User
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    // Get User By Id
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     // Get All Users
-    public java.util.List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 

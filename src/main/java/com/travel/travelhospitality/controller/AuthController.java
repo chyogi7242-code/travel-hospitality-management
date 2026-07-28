@@ -1,6 +1,7 @@
 package com.travel.travelhospitality.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,9 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.travel.travelhospitality.dto.AuthRequest;
 import com.travel.travelhospitality.dto.AuthResponse;
+import com.travel.travelhospitality.dto.RefreshTokenRequest;
 import com.travel.travelhospitality.dto.RegisterRequest;
+import com.travel.travelhospitality.entity.RefreshToken;
 import com.travel.travelhospitality.entity.User;
 import com.travel.travelhospitality.security.JwtService;
+import com.travel.travelhospitality.service.RefreshTokenService;
 import com.travel.travelhospitality.service.UserService;
 
 @RestController
@@ -22,6 +26,12 @@ public class AuthController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Register User
     @PostMapping("/register")
@@ -48,14 +58,44 @@ public class AuthController {
             throw new RuntimeException("User Not Found");
         }
 
-        if (!user.getPassword().equals(request.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid Password");
         }
 
-        String token = jwtService.generateToken(
-                user.getUsername(),
-                user.getRole());
+        String accessToken =
+                jwtService.generateToken(user.getUsername(), user.getRole());
 
-        return new AuthResponse(token);
+        RefreshToken refreshToken =
+                refreshTokenService.createRefreshToken(user);
+
+        return new AuthResponse(
+                accessToken,
+                refreshToken.getToken());
+    }
+
+    // Refresh Access Token
+    @PostMapping("/refresh")
+    public AuthResponse refreshToken(
+            @RequestBody RefreshTokenRequest request) {
+
+        RefreshToken refreshToken =
+                refreshTokenService.findByToken(request.getRefreshToken());
+
+        if (refreshToken == null) {
+            throw new RuntimeException("Invalid Refresh Token");
+        }
+
+        if (refreshTokenService.isExpired(refreshToken)) {
+            throw new RuntimeException("Refresh Token Expired");
+        }
+
+        User user = refreshToken.getUser();
+
+        String accessToken =
+                jwtService.generateToken(user.getUsername(), user.getRole());
+
+        return new AuthResponse(
+                accessToken,
+                refreshToken.getToken());
     }
 }
